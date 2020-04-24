@@ -119,13 +119,17 @@ rsvpYes.onclick = () =>{
     attending: true  
     }).catch(console.error);
 }
-rsvpNo.onclick = () => {
-  const userDoc = firebase.firestore().collection('attendees').doc(firebase.auth().currentUser.uid);
-  userDoc.set({
-    attending: false  
-    }).catch(console.error);
 
+rsvpNo.onclick = () => {
+  // Get a reference to the user's document in the attendees collection
+  const userDoc = firebase.firestore().collection('attendees').doc(firebase.auth().currentUser.uid);
+
+  // If they RSVP'd yes, save a document with attending: true
+  userDoc.set({
+    attending: false
+  }).catch(console.error)
 }
+
 firebase.firestore().collection('attendees')
 .where('attending', '==', true).onSnapshot((snap)=>{
   const newAttendeeCount = snap.docs.length;
